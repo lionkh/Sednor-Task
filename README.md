@@ -9,7 +9,7 @@ To install the project:
 3) npm/yarn install
 
 
-4)start mongod.exe and mongo.exe
+4. start mongod.exe and mongo.exe
 
     
 5) npm/yarn start
