@@ -8,8 +8,11 @@ To install the project:
     
 3) npm/yarn install
 
-    
-4) npm/yarn start
+
+4)start mongod.exe and mongo.exe
 
     
-5) go to localhost:3000
+5) npm/yarn start
+
+    
+6) go to localhost:3000
