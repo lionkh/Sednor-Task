@@ -1,6 +1,6 @@
 import createAccount from './createAccount';
 import  addCurrentUser  from './addCurrentUser';
-
+import { browserHistory } from 'react-router';
 
 export default function regSubmit(newUser){
     return dispatch => {   
@@ -25,7 +25,7 @@ export default function regSubmit(newUser){
                         console.log('Registrated', data);
                         localStorage.setItem('curUser', JSON.stringify(data));
                         dispatch(addCurrentUser(data));
-                        document.location.href = 'feed';
+                        browserHistory.push('/feed');
                          });
                     }
                 })

@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Greeting from './Greeting.js';
-import Head from '../head/Head.js';
+import Greeting from './../Greeting/Greeting.js';
+import Head from '../../head/Head/Head.js';
 import { connect } from 'react-redux';
-const cancel = require('./img/cancel.png');
-import addCurrentUser from '../../actions/addCurrentUser';
-import delCurrentUser from '../../actions/delCurrentUser';
-import addNewPost from '../../actions/addNewPost';
-import PostList from '../PostList/PostList.js';
-import Post from '../Post/Post.js';
-const search = require('./img/search.png');
-import fetchPosts from '../../actions/getPosts';
-
+const cancel = require('./../img/cancel.png');
+import addCurrentUser from '../../../actions/addCurrentUser';
+import delCurrentUser from '../../../actions/delCurrentUser';
+import addNewPost from '../../../actions/addNewPost';
+import PostList from '../../PostList/PostList.js';
+import Post from '../../Post/Post.js';
+const search = require('./../img/search.png');
+import fetchPosts from '../../../actions/getPosts';
+import { browserHistory } from 'react-router';
+import './styles.scss';
 
 class MainPage extends Component{
 
@@ -24,24 +25,15 @@ class MainPage extends Component{
         this.sendPost = this.sendPost.bind(this);
         this.handleTextChange = this.handleTextChange.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
+        this.handleSearch = this.handleSearch.bind(this);
+        this.close = this.close.bind(this);
+        this.keySearch = this.keySearch.bind(this);
       
     }
 
 
     componentWillMount(){
-        //вызываем функцию которая вызывает экшен который 
-        //диспатчит из локального хранилища в стор данные о польователе
-        //а после данные берутся из стора и рендерятся на странице
-
-        //при логауте локальное хранилище и стор очищаются
-
-       /*  let newUser =  JSON.parse(localStorage.getItem('curUser'));
-        this.props.setCurUser(newUser);
-        console.log(this.returnCurUser());
-        this.setState({
-            author: this.returnCurUser()
-        }) */
-
+     
         let newUser =  JSON.parse(localStorage.getItem('curUser'));
         this.props.setCurUser(newUser);
         setTimeout(()=>{
@@ -54,18 +46,9 @@ class MainPage extends Component{
         this.props.getPosts();
     }
 
-    componentDidMount(){
-       // alert(this.props.posts[0].id)
-    }
-    
-
-
-
     newPost(){
         document.querySelector('.new-post').style.visibility = 'visible';
-        //document.querySelector('.post-list').style.opacity = 0.2
-     
-      //  document.querySelector('.main-page').style.opacity = '0.6';
+    
 
     }
 
@@ -82,7 +65,6 @@ class MainPage extends Component{
     sendPost(){
       
   
-        //action + fetch etc
         let post = {
             author: this.state.author.trim(),
             title: this.state.title.trim(),
@@ -114,8 +96,19 @@ class MainPage extends Component{
 
     logOut(){
         localStorage.removeItem('curUser');
-        document.location.href = 'http://localhost:3000/';
+        //document.location.href = 'http://localhost:3000/';
+        browserHistory.push('/');
 
+    }
+
+    handleSearch(){
+        this.props.onFindPost(this.searchInput.value);
+    }
+
+    keySearch(event){
+        if(event.keyCode == 13){
+            this.handleSearch();
+        }
     }
 
 
@@ -126,8 +119,8 @@ class MainPage extends Component{
             <div className="search-bar">
                 <Head />
                 <span className = "welcome">Welcome, {this.state.author}</span>
-                <input className = "search"  type="text" placeholder = 'Search'/>
-                <img className = 'search-submit' src={search} alt=""/>
+                <input onKeyDown = {this.keySearch} className = "search" ref = {(input)=> {this.searchInput = input}} type="text" placeholder = 'Search'/>
+                <img onClick = {this.handleSearch} className = 'search-submit' src={search} alt=""/>
                 <div className="logout" onClick = {this.logOut}>Logout</div>
                 
             </div>
@@ -149,7 +142,7 @@ class MainPage extends Component{
 export default connect(
     (state, ownProps)=>({
         curUser: state.curUsers,
-        posts: state.posts,
+        posts: state.posts.filter(post => post.title.includes(state.filterTracks)),
         myProps: ownProps
    }), 
      dispatch=>({
@@ -164,5 +157,8 @@ export default connect(
      },
      getPosts: ()=>{
          dispatch(fetchPosts());
+     },
+     onFindPost: (searchValue) =>{
+         dispatch({type: 'FIND_POST', payload: searchValue.trim()})
      }
    })) (MainPage);

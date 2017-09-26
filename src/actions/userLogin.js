@@ -1,5 +1,5 @@
 import  addCurrentUser  from './addCurrentUser';
-
+import { browserHistory } from 'react-router';
 
 export default function loginSubmit(user) {
    return dispatch => {
@@ -13,7 +13,7 @@ export default function loginSubmit(user) {
 
                 localStorage.setItem('curUser', JSON.stringify(user));
                 dispatch(addCurrentUser(user));
-                document.location.href = 'feed';
+                browserHistory.push('/feed');
                 /* document.querySelector('.greet-page').style.visibility = 'hidden'; */
                 /* document.querySelector('.signup').style.visibility = 'hidden'; */
                 /* document.querySelector('.main-page').style.visibility = 'visible'; */

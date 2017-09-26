@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Post from '../Post/Post.js';
 import { connect } from 'react-redux';
+import './styles.scss';
+
 
 class PostList extends Component{
     constructor(props){
@@ -15,20 +17,25 @@ class PostList extends Component{
         )
     }
     render(){
+
         return(
             <ul className = 'post-list'>{
                 this.props.items.map(this.eachPost)
             }
-        
         </ul>
+
         )
     }
 };
 
 export default connect(
     (state)=>({
-        items: state.posts
-    }),
+        items: state.posts.filter(item => {
+            
+        return item.title.toLowerCase().includes(state.filterPosts.toLowerCase())
+            || item.text.toLowerCase().includes(state.filterPosts.toLowerCase()) }
+        ).reverse(),
+        }),
     (dispatch)=>({
 
     })

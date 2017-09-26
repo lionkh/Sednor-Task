@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import '../../styles.scss';
-import Header from '../head/Header.js';
-import Greeting from '../body/Greeting.js';
+import Header from '../head/Header/Header.js';
+import Greeting from '../body/Greeting/Greeting.js';
+import './styles.scss';
 
 class Start extends Component{
     render(){
         return(
-            <div className = "test">
+            <div className = "cover">
                 <Header />
                 <Greeting />
             </div>

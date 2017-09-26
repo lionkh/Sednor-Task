@@ -1,0 +1,170 @@
+.greet-page{
+    transition: opacity 0.4s, visibility 0s linear 0.3s;
+    position: relative;
+    width: 100%;
+    overflow: auto;
+
+    .greeting{
+        display: block;
+        padding: 0;
+        
+        margin-bottom: 15px;
+    
+        .logo{
+        width: 60px;
+        float: left;
+        margin-right: 70px;
+        margin-top: 5px;
+    }
+        h1{
+            text-align: center;
+            margin-top: 3%;
+            color: #fff;
+    
+        }
+    
+    }
+}
+
+
+
+.about{
+    width: 80%;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 12%;
+    font-size: 25px;
+    background: rgba(30, 43, 43, 0.6);
+    color: #fff;
+    padding: 15px;
+    
+}
+
+
+.main-logo2{
+     max-width: 100%;
+
+     .have-account{
+         padding-top: 12%;
+         padding-left: 4%;
+         color: #000;
+         max-width: 32%;
+         float: left;
+         font-size: 20px;
+         text-align: center;
+ 
+ 
+         .reg-button{
+             cursor: pointer;
+             display: block;
+             width: 200px;
+             height: 65px;
+             background: rgba(30, 43, 43, 0.60);
+             color: white;
+             border-radius: 20px;
+             font-size: 20px;
+             text-align: center;
+             line-height: 60px;
+             text-decoration: none; 
+             margin-left: 25%; 
+             font-weight: bold;
+             
+             &:hover{
+             background: rgba(30, 43, 43, 0.95);
+             
+         }
+         
+         }
+        
+     }
+ 
+     .no-account{
+         padding-top: 12%;
+         float: right;
+         padding-right: 7%;
+         @extend .have-account;
+ 
+         .reg-button{
+             margin-left: 25%;
+         }
+         
+     }
+ }
+
+ 
+.registration{
+    
+    visibility: hidden;
+   position:absolute;
+   width: 65.3%;
+   height: 33.7%;
+   top: 11%;
+   left: 17.3%;
+   background: rgba(255,255,255,0.6);
+
+    .reg{
+        margin-left: 5%;
+
+        .submit{
+        cursor: pointer;
+        transition: background-color, color 0.5s ease;
+        text-transform: uppercase;
+        font-size: 25px;
+        display: block;
+        color: #000;
+        font-weight: bold;
+        background: #fff;
+        width: 20%;
+        margin-top: 4%;
+        border-radius: 50px;
+        text-align: center;
+
+        &:hover{
+        transition: background-color, color 0.5s ease;
+            color: #fff;
+            background: #A9EAEA;
+        }
+
+        }
+
+        input{
+            font-size: 20px;
+            width: 40%;
+            height: 25px;
+        }
+
+    
+
+        .close{
+            position: absolute;
+            top: 5%;
+            left: 93%;
+            cursor: pointer;
+            width: 40px;
+
+            &:hover{
+                transition: transform 1s;
+                transform: rotate(180deg);
+            }
+          
+        }
+    }
+
+
+   .submit{
+       display: block;
+       font-size: 16px;
+       text-decoration: none;
+       color: black;
+   }
+}
+ 
+.signup{
+    @extend .registration;
+
+    .log{
+        @extend .reg;
+    }
+}
+
+

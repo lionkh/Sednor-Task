@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import  loginSubmit  from '../../actions/userLogin';
-const cancel = require('./img/cancel.png');
+import  loginSubmit  from '../../../actions/userLogin';
+const cancel = require('./../img/cancel.png');
 
 class Signup extends Component{
 
@@ -18,7 +18,7 @@ class Signup extends Component{
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
         this.close = this.close.bind(this);
-
+        this.keyLogin = this.keyLogin.bind(this);
     }
 
       close(){
@@ -55,6 +55,11 @@ class Signup extends Component{
         });
     }
 
+    keyLogin(e){
+        if(e.keyCode == 13)
+            this.handleLogin();
+    }
+
     handleLogin(){
         var user = {
             login: this.state.login.trim(),
@@ -74,11 +79,11 @@ class Signup extends Component{
        }
 
     }
-        //сделать режим гостя и режим авторизации
+       
 
     render(){
         return(
-            <div className="signup">
+            <div onKeyDown = {this.keyLogin} className="signup">
                 <form action="" className = "log">
                     <h1>Enter your data:</h1>
                         <h2>Login:</h2> 
@@ -95,12 +100,7 @@ class Signup extends Component{
 
 }
 
-/* 
-const mapStateToProps = state => {
-    return {
-        items: state.posts
-    }
-}; */
+
 
 export default connect(
     (state)=>({

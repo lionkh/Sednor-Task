@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import NavBar from './NavBar.js';
-const menu = require( './img/menu.png');
+import NavBar from './../NavBar/NavBar.js';
+/* const menu = require( './img/menu.png'); */
+import './styles.scss';
 
 export default class Head extends Component{
     render(){

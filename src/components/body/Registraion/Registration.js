@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-const cancel = require('./img/cancel.png');
+const cancel = require('./../img/cancel.png');
 import { connect } from 'react-redux';
-import regSubmit from '../../actions/userReg';
+import regSubmit from '../../../actions/userReg';
 
 class Registration extends Component{
 
@@ -36,10 +36,7 @@ class Registration extends Component{
         });
         
     }
-    componentDidMount(){
-       
-    }
-
+ 
     handleLoginChange(event){
         event.target.style.background = 'white';
         this.setState({
