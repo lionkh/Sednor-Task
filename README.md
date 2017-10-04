@@ -13,7 +13,7 @@
 `node server.js/npm start`
 
 ###### Viewing the application in your browser
-`http://localhost:8000`
+`http://localhost:3000`
 
 # Schema
 
