@@ -1,16 +1,3 @@
-@font-face {
-    font-family: 'Raleway';
-    src: url('raleway/Raleway Thin.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
-
-@mixin linear-gradient($direction, $color-stops...) {
-  background: nth(nth($color-stops, 1), 1);
-  background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
-  background: linear-gradient($direction, $color-stops);
-}
-
 body{
     margin: 0;
     padding: 0;
@@ -18,43 +5,7 @@ body{
     min-width: 320px;
     position: relative;
     font-size: 16px;
-    font-family: 'Raleway', sans-serif;
-    background: #000;
 }
 
 
 
-/* .main-logo{
-    width: 80%;
-    display: block;
-    margin: 0 auto;
-    background-color: rgba(75,104,104,1);
-}
- */
-
-
-
-
- .touchmenu{
-    display: none;
-}
-
-
-
-@media(max-width: 1250px){
-    .top-menu{
-        padding-right: 10%;
-    }
-}
-
-@media(max-width: 1100px){
-    .top-menu{
-        padding-right: 5%;
-    }
-}
-
-@media(max-width: 882px){
-    .top-menu{
-        padding-right: 1%;
-    }
-}

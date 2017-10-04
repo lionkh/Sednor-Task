@@ -1,0 +1,136 @@
+.new-invoice-form{
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    padding: 25px;
+   /*  display: none; */
+    width: 85%;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 2%;
+
+    .main-title{
+        font-size: 30px;
+        margin-bottom: 30px;
+        margin-top: 0;
+    }
+
+    .title{
+        width: 50%;
+        color: #333333;
+        font-size: 22px;
+    }
+
+
+    .select{
+        display: block;
+        width: 60%;
+        height: 40px;
+        margin: 0 auto;
+        margin-top: 20px;
+        border-radius: 5px;
+        font-size: 20px;
+    }
+
+    .final-buttons{
+        display: inline-block;
+        width: 100%;
+        .submit-button{
+            display: inline-block;
+            margin-right: 8%;
+            font-size: 18px;
+            height: 50px;
+            border-radius: 20px;
+            float: right; 
+             width: 20%;
+          }
+          .close-button{
+            font-size: 18px;
+            height: 50px;
+            border-radius: 20px;
+            margin-left: 8%;
+            float: left;
+            width: 20%;
+          }
+          
+    }
+   
+}
+
+.product-form{
+    margin-top: 20px;
+    .count-button{
+        margin-top: 35px;
+        float: left; 
+    }
+    .item-price{
+        margin-top: 25px;
+        font-size: 30px;
+        
+    }
+}
+
+.add-product-button{
+    display: block;
+    margin: 0 auto;
+    margin-top: 30px;
+    width: 250px;
+    height: 50px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 20px;
+}
+.delete-product-button{
+   @extend .add-product-button;
+   margin-bottom: 50px;
+   
+}
+
+.final-price-button{
+    width: 60%;
+    display: block;
+    margin: 0 auto;
+    margin-top: 35px;
+}
+
+.final-price{
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    margin: 0 auto; 
+    background: #fff;
+    color: #333333;
+    margin-top: 55px;
+    font-size: 26px;
+    height: 70px;
+    display: block;
+    line-height: 50px;
+    max-width: 100%;
+    
+    .money{
+        margin-left: 2%;
+        border-bottom: 2px solid #333333;
+    }
+}
+
+.final-discount-price{
+    @extend .final-price;
+}
+
+.close-button{
+    border-radius: 5px;
+    margin-top: 35px;
+    margin-right: 60px;
+    font-weight: bold;
+    width: 250px;
+    height: 40px;
+    font-weight: 25px;
+}
+
+.submit-button{
+    border-radius: 5px;
+    margin-top: 35px;
+    margin-left: 60px;
+    font-weight: bold;
+    width: 250px;
+    height: 40px;
+    font-weight: 25px;
+}

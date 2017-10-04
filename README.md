@@ -1,18 +1,74 @@
-To install the project: 
+# Dependencies
 
-1) git clone https://github.com/lionkh/Blog.git
+- sqlite3
+- node
+- npm
 
-    
-2) cd Blog
+# Getting Started
 
-    
-3) npm/yarn install
+###### Install npm dependencies
+`npm install`
+
+###### Run the node server
+`npm start`
+
+###### Viewing the application in your browser
+`http://localhost:8000`
+
+# Schema
+
+## Customers
+
+- id (integer)
+- name (string)
+- address (string)
+- phone (string)
 
 
-4. start mongod.exe and mongo.exe
+## Products
 
-    
-5) npm/yarn start
+- id (integer)
+- name (string)
+- price (decimal)
 
-    
-6) go to localhost:3000
+## Invoices
+
+- id (integer)
+- customer_id (integer)
+- discount (decimal)
+- total (decimal)
+
+## InvoiceItems
+
+- id (integer)
+- invoice_id (integer)
+- product_id (integer)
+- quantity (decimal)
+
+
+# Resources
+
+## Customers
+```
+GET|POST          /api/customers
+GET|PUT|DELETE    /api/customers/{id}
+```
+
+## Products
+```
+GET|POST          /api/products
+GET|PUT|DELETE    /api/products/{id}
+```
+## Invoices
+```
+GET|POST          /api/invoices
+GET|PUT|DELETE    /api/invoices/{id}
+```
+
+## InvoiceItems
+```
+GET|POST          /api/invoices/{id}/items
+GET|PUT|DELETE    /api/invoices/{invoice_id}/items/{id}
+```
+
+

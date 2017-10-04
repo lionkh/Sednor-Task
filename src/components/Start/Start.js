@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
-import '../../styles.scss';
-import Header from '../head/Header/Header.js';
-import Greeting from '../body/Greeting/Greeting.js';
 import './styles.scss';
+import Header from '../Header/Header.js';
 
-class Start extends Component{
-    render(){
-        return(
-            <div className = "cover">
-                <Header />
-                <Greeting />
-            </div>
-        )
-    }
-};
 
-export default Start;
+export default class Start extends Component{
+    render() {
+    return (
+
+      <div>
+        <Header/> 
+      <h1 className = "welcome">Welcome to Invoice App!</h1>
+      
+      </div>
+
+    );
+  }
+
+} 

@@ -3,8 +3,7 @@ var webpack = require('webpack');
 var express = require('express');
 var config = require('./webpack.config');
 const bodyParser = require('body-parser');
-var MongoClient = require('mongodb').MongoClient;
-var ObjectID = require('mongodb').ObjectID;
+
 
 var app = express();
 var compiler = webpack(config);
@@ -24,181 +23,299 @@ app.use(require('webpack-dev-middleware')(compiler, {
 
 app.use(require('webpack-hot-middleware')(compiler));
 
+/* 
+var express = require('express'),
+bodyParser = require('body-parser'),
+http = require('http'), */
+path = require('path'),
+cors = require('cors'),
+Sequelize = require('sequelize'),
+_ = require('lodash');
 
-//users
 
-app.get('/users', (req, res) => {
-  db.collection('users').find().toArray((err,docs)=>{
-    if(err){
-        console.log(err);
-        return res.sendStatus(500);
-      }
-
-      res.send(docs);
-  })
+sequelize = new Sequelize('sqlite://' + path.join(__dirname, 'invoices.sqlite'), {
+dialect: 'sqlite',
+storage: path.join(__dirname, 'invoices.sqlite')
 });
 
-app.post('/users', (req, res) => {
-  
-  var user = {
-    login: req.body.login,
-    password: req.body.password,
-    name: req.body.name
-  };
-
-  db.collection('users').findOne({login: req.body.login}, function(err, doc){
-    if(err){
-    return res.sendStatus(500);
-    }
-    if(doc == null){
-      db.collection('users').insert(user, function(err, result){ 
-      if(err){
-        console.log('error' + err);
-        return res.sendStatus(500);
-      }
-      res.send(user); 
-       }); 
-   // return res.sendStatus(200);
-    }
-    if(doc != null){
-     console.log(doc);
-     return res.sendStatus(500);
-    }
-  })
-
-  /* 
-
-   if(status = 500)
-    {
-     // console.log('Уже есть юзер');
-      return res.sendStatus(500);
-    }
-
-    if(status = 200){
-     
-    }  */
-
-
-
-
+Customer = sequelize.define('customers', {
+id: {
+type: Sequelize.INTEGER,
+primaryKey: true,
+autoIncrement: true
+},
+name: {
+type: Sequelize.STRING
+},
+address: {
+type: Sequelize.STRING
+},
+phone: {
+type: Sequelize.STRING
+}
 });
 
+Product = sequelize.define('products', {
+id: {
+type: Sequelize.INTEGER,
+primaryKey: true,
+autoIncrement: true
+},
+name: {
+type: Sequelize.STRING
+},
+price: {
+type: Sequelize.DECIMAL
+}
+});
 
+Invoice = sequelize.define('invoices', {
+id: {
+type: Sequelize.INTEGER,
+primaryKey: true,
+autoIncrement: true
+},
+customer_id: {
+type: Sequelize.INTEGER
+},
+discount: {
+type: Sequelize.DECIMAL
+},
+total: {
+type: Sequelize.DECIMAL
+}
+});
 
-app.get('/users/:login', (req, res)=> {
-   db.collection('users').findOne({login: req.params.login}, function(err, doc){
-    if(err){
-      console.log(err);
-      return res.sendStatus(500);
-    }
-    res.send(doc);
-  })
+InvoiceItem = sequelize.define('invoice_items', {
+id: {
+type: Sequelize.INTEGER,
+primaryKey: true,
+autoIncrement: true
+},
+invoice_id: {
+type: Sequelize.INTEGER
+},
+product_id: {
+type: Sequelize.INTEGER
+},
+quantity: {
+type: Sequelize.DECIMAL
+}
+});
 
+sequelize.sync().then(function() {
+Customer.create({
+name: "Mark Benson",
+address: "353 Rochester St, Rialto FL 43250",
+phone: "555-534-2342"
+});
+
+Customer.create({
+name: "Bob Smith",
+address: "215 Market St, Dansville CA 94325",
+phone: "555-534-2342"
+});
+
+Customer.create({
+name: "John Draper",
+address: "890 Main St, Fontana IL 31450",
+phone: "555-534-2342"
+});
+
+Product.create({
+name: "Parachute Pants",
+price: 29.99
+});
+
+Product.create({
+name: "Phone Holder",
+price: 9.99
+});
+
+Product.create({
+name: "Pet Rock",
+price: 5.99
+});
+
+Product.create({
+name: "Egg Timer",
+price: 15.99
+});
+
+Product.create({
+name: "Neon Green Hat",
+price: 21.99
+});
+
+}).catch(function(e) {
+console.log("ERROR SYNCING WITH DB", e);
+});
+
+/* var app = module.exports = express();
+app.set('port', process.env.PORT || 8000);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true })); */
+/* app.use(express.static(path.join(__dirname, 'public'))); */
+app.use(cors());
+
+// CUSTOMERS API
+
+app.route('/api/customers')
+.get(function(req, res) {
+Customer.findAll().then(function(customers) {
+  res.json(customers);
 })
-
-
-
-
-
-
-
-
-//posts
-
- app.get('/posts', (req, res) => {
-
-    db.collection('posts').find().toArray(function(err, docs){
-      if(err){
-        console.log(err);
-        return res.sendStatus(500);
-      }
-
-      res.send(docs);
-    })
+})
+.post(function(req, res) {
+var customer = Customer.build(_.pick(req.body, ['name', 'address', 'phone']));
+customer.save().then(function(customer){
+  res.json(customer);
+});
 });
 
-app.get('/posts/:id', (req, res) => {
-  db.collection('posts').findOne({_id: ObjectID(req.params.id)}, function(err, doc){
-    if(err){
-      console.log(err);
-      return res.sendStatus(500);
-    }
-    res.send(doc);
-  })
+app.route('/api/customers/:customer_id')
+.get(function(req, res) {
+Customer.findById(req.params.customer_id).then(function(customer) {
+  res.json(customer);
+});
+})
+.put(function(req, res) {
+Customer.findById(req.params.customer_id).then(function(customer) {
+  customer.update(_.pick(req.body, ['name', 'address', 'phone'])).then(function(customer) {
+    res.json(customer);
+  });
+});
+})
+.delete(function(req, res) {
+Customer.findById(req.params.customer_id).then(function(customer) {
+  customer.destroy().then(function(customer) {
+    res.json(customer);
+  });
+});
 });
 
-app.post('/posts', (req, res) => {
-  //получаем json: {"author": "lev", "title": "First, ...}
- 
-  var post = {
-    author: req.body.author,
-    title: req.body.title,
-    text: req.body.text,
-    //image: req.body.image
-  };
+// PRODUCTS API
 
-  db.collection('posts').insert(post, function(err, result){ //попробовать через then data=>{}
-    if(err){
-      console.log(err);
-      return res.sendStatus(500);
-    }
-    res.send(post); //id вставится автоматически */
- });
+app.route('/api/products')
+.get(function(req, res) {
+Product.findAll().then(function(products) {
+  res.json(products);
+})
+})
+.post(function(req, res) {
+var product = Product.build(_.pick(req.body, ['name', 'price']));
+product.save().then(function(product){
+  res.json(product);
+});
 });
 
- app.delete('/users', (req, res)=>{
-
-  db.collection('users').drop();
-  
-}) 
-
-app.delete('/posts', (req, res)=>{
-  
-    db.collection('posts').drop();
-    
-  }) 
-
-app.delete('/users/:id', (req, res) => {
-  db.collection('users').deleteOne( 
-    {_id: ObjectID(req.params.id)}, // условие для поиска элемента
-    (err, result)=>{
-      if(err){
-        console.log(err);
-        return res.sendStatus(500);
-      }
-      res.sendStatus(200);
-    }
-  )
+app.route('/api/products/:product_id')
+.get(function(req, res) {
+Product.findById(req.params.product_id).then(function(product) {
+  res.json(product);
+});
+})
+.put(function(req, res) {
+Product.findById(req.params.product_id).then(function(product) {
+  product.update(_.pick(req.body, ['name', 'price'])).then(function(product) {
+    res.json(product);
+  });
+});
+})
+.delete(function(req, res) {
+Product.findById(req.params.product_id).then(function(product) {
+  product.destroy().then(function(product) {
+    res.json(product);
+  });
+});
 });
 
+
+// INVOICES API
+
+app.route('/api/invoices')
+.get(function(req, res) {
+Invoice.findAll().then(function(invoices) {
+  res.json(invoices);
+})
+})
+.post(function(req, res) {
+var invoice = Invoice.build(_.pick(req.body, ['customer_id', 'discount', 'total']));
+invoice.save().then(function(invoice){
+  res.json(invoice);
+});
+});
+
+app.route('/api/invoices/:invoice_id')
+.get(function(req, res) {
+Invoice.findById(req.params.invoice_id).then(function(invoice) {
+  res.json(invoice);
+});
+})
+.put(function(req, res) {
+Invoice.findById(req.params.invoice_id).then(function(invoice) {
+  invoice.update(_.pick(req.body, ['customer_id', 'discount', 'total'])).then(function(invoice) {
+    res.json(invoice);
+  });
+});
+})
+.delete(function(req, res) {
+Invoice.findById(req.params.invoice_id).then(function(invoice) {
+  invoice.destroy().then(function(invoice) {
+    res.json(invoice);
+  });
+});
+});
+
+
+// INVOICE ITEMS API
+
+app.route('/api/invoices/:invoice_id/items')
+.get(function(req, res) {
+InvoiceItem.findAll({where: { invoice_id: req.params.invoice_id }}).then(function(invoice_items) {
+  res.json(invoice_items);
+})
+})
+.post(function(req, res) {
+var invoice_item = InvoiceItem.build(_.pick(req.body, ['product_id', 'quantity']));
+invoice_item.set('invoice_id', req.params.invoice_id);
+invoice_item.save().then(function(invoice_item){
+  res.json(invoice_item);
+});
+});
+
+app.route('/api/invoices/:invoice_id/items/:id')
+.get(function(req, res) {
+InvoiceItem.findById(req.params.id).then(function(invoice_item) {
+  res.json(invoice_item);
+});
+})
+.put(function(req, res) {
+InvoiceItem.findById(req.params.id).then(function(invoice_item) {
+  invoice_item.update(_.pick(req.body, ['product_id', 'quantity'])).then(function(invoice_item) {
+    res.json(invoice_item);
+  });
+});
+})
+.delete(function(req, res) {
+InvoiceItem.findById(req.params.id).then(function(invoice_item) {
+  invoice_item.destroy().then(function(invoice_item) {
+    res.json(invoice_item);
+  });
+});
+});
+
+
+// Redirect all non api requests to the index
 app.get('*', function(req, res) {
-  res.sendFile(path.join(__dirname, 'index.html'));
-}); 
+res.sendFile(path.join(__dirname, 'index.html'));
+});
 
-/* app.get('/feed', function(req, res) {
-  res.sendFile(path.join(__dirname, 'index.html'));
-}); 
-
-app.get('/greet', function(req, res) {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});  */
-
-
-MongoClient.connect('mongodb://localhost:27017/myDB', function(err, database){
-  if(err){
-    return console.log(err);
-  }
-
-  db = database;
-
-  app.listen(3000, function(err) {
+// Starting express server
+app.listen(3000, function(err) {
   if (err) {
     return console.error(err);
   }
 
   console.log('Listening at http://localhost:3000/');
 });
-
-});
-
-
