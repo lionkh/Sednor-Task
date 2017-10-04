@@ -1,14 +1,14 @@
 {
-  "name": "react-hot-boilerplate",
+  "name": "sednot-task",
   "version": "1.0.0",
-  "description": "Boilerplate for ReactJS project with hot code reloading",
+  "description": "",
   "scripts": {
     "start": "node server.js ",
     "lint": "eslint src"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gaearon/react-hot-boilerplate.git"
+    "url": "https://github.com/lionkh/Sednor-Task"
   },
   "keywords": [
     "react",
